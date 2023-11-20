@@ -11,31 +11,21 @@ import com.myio.myincomeoutcome.repository.TransactionRepository;
 import com.myio.myincomeoutcome.repository.UserCredentialRepository;
 import com.myio.myincomeoutcome.service.CategoryService;
 import com.myio.myincomeoutcome.util.ValidationUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -206,13 +196,13 @@ class TransactionServiceImplTest {
         assertEquals(100L, result.get(0).getAmount());
         assertEquals("Description 1", result.get(0).getDescription());
         assertEquals(LocalDate.now().toString(), result.get(0).getTransDate());
-        assertEquals(com.myio.myincomeoutcome.constant.Category.OUTCOME, result.get(0).getCategory().getName()); // Mengambil nama kategori
+        assertEquals(com.myio.myincomeoutcome.constant.Category.OUTCOME, result.get(0).getCategory().getName());
 
         assertEquals("2", result.get(1).getId());
         assertEquals(200L, result.get(1).getAmount());
         assertEquals("Description 2", result.get(1).getDescription());
         assertEquals(LocalDate.now().toString(), result.get(1).getTransDate());
-        assertEquals(com.myio.myincomeoutcome.constant.Category.OUTCOME, result.get(1).getCategory().getName()); // Mengambil nama kategori
+        assertEquals(com.myio.myincomeoutcome.constant.Category.OUTCOME, result.get(1).getCategory().getName());
 
         verify(transactionRepository, times(1)).findAllTransactions();
     }

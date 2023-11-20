@@ -28,7 +28,7 @@
 [//]: # (* [Building REST services with Spring]&#40;https://spring.io/guides/tutorials/rest/&#41;)
 
 * ### What is MYIO(my income and outcome) ?
-  myio application is an application used to track your income and outcome
+  MYIO application is a Backend application used to track your income and outcome
 * ### How to testing this backend application ?
   * creating environment variable in your favorit IDE such as intellij :
     ```HOST=yourlocalhost; DB_NAME=yourdbname; DB_PASSWORD=yourdbpassword; DB_USERNAME=yourusernamedb.``` 

@@ -61,6 +61,7 @@ class TransactionControllerTest {
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
+
         CommonResponse<Object> response = new ObjectMapper().readValue(content, CommonResponse.class);
         assertEquals("successfully create new income", response.getMessage());
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
@@ -70,12 +71,10 @@ class TransactionControllerTest {
 
     @Test
     void createNewOutCome_Success() throws Exception {
-        // Arrange
         TransactionRequest request = new TransactionRequest("userId", "Description", 100L);
 
         when(transactionService.createNewOutcome(request)).thenReturn("Data berhasil ditambahkan");
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/transactions/outcome")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request));
@@ -84,8 +83,7 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
-        String content = result.getResponse().getContentAsString();
+            String content = result.getResponse().getContentAsString();
         CommonResponse<Object> response = new ObjectMapper().readValue(content, CommonResponse.class);
         assertEquals("successfully create new outcome", response.getMessage());
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
@@ -96,10 +94,9 @@ class TransactionControllerTest {
 
     @Test
     void getAllTransactions_NoDate_Success() throws Exception {
-        // Arrange
+
         when(transactionService.findAllTransactions()).thenReturn(Collections.emptyList());
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/transactions")
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -107,8 +104,7 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
-        String content = result.getResponse().getContentAsString();
+            String content = result.getResponse().getContentAsString();
         CommonResponse<List<TransactionResponse>> response = new ObjectMapper().readValue(content, CommonResponse.class);
         assertEquals("successfully get all transactions", response.getMessage());
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
@@ -117,11 +113,9 @@ class TransactionControllerTest {
 
     @Test
     void getAllTransactions_WithDate_Success() throws Exception {
-        // Arrange
         LocalDate localDate = LocalDate.now();
         when(transactionService.getTransactionsByDate(localDate)).thenReturn(Collections.emptyList());
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/transactions")
                 .param("date", localDate.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -130,7 +124,6 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
         String content = result.getResponse().getContentAsString();
         CommonResponse<List<TransactionResponse>> response = new ObjectMapper().readValue(content, CommonResponse.class);
         assertEquals("successfully get all transactions", response.getMessage());
@@ -140,10 +133,9 @@ class TransactionControllerTest {
 
     @Test
     void deleteTransactionById_Success() throws Exception {
-        // Arrange
+
         String transactionId = "exampleTransactionId";
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/api/transactions")
                 .param("transactionId", transactionId);
@@ -152,7 +144,6 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
         verify(transactionService, times(1)).deleteTransactionById(transactionId);
 
         String content = result.getResponse().getContentAsString();
@@ -197,7 +188,6 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
         verify(transactionService, times(1)).findAllTransactionByIncome();
 
         String content = result.getResponse().getContentAsString();
@@ -209,12 +199,9 @@ class TransactionControllerTest {
 
     @Test
     void findTransactionByOutcome_Success() throws Exception {
-        // Arrange
         List<TransactionResponse> mockTransactions = new ArrayList<>();
-        // Mocking transactionService behavior
         when(transactionService.findAllTransactionByOutcome()).thenReturn(mockTransactions);
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/api/transactions/outcome");
 
@@ -222,7 +209,6 @@ class TransactionControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        // Assert
         verify(transactionService, times(1)).findAllTransactionByOutcome();
 
         String content = result.getResponse().getContentAsString();
@@ -234,14 +220,11 @@ class TransactionControllerTest {
 
     @Test
     void getTotalIncomeByDate_Success() throws Exception {
-        // Arrange
         String startDate = "2023-11-19";
         String endDate = "2023-11-20";
         Long mockTotalIncome = 1000L;
-        // Mocking transactionService behavior
         when(transactionService.getTotalIncomeByDate(any(LocalDate.class), any(LocalDate.class))).thenReturn(mockTotalIncome);
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/api/transactions/total-income")
                 .param("startDate", startDate)
@@ -251,7 +234,6 @@ class TransactionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Assert
         verify(transactionService, times(1)).getTotalIncomeByDate(LocalDate.parse(startDate), LocalDate.parse(endDate));
 
         String content = result.getResponse().getContentAsString();
@@ -261,14 +243,11 @@ class TransactionControllerTest {
 
     @Test
     void getTotalOutcomeByDate_Success() throws Exception {
-        // Arrange
         String startDate = "2023-11-19";
         String endDate = "2023-11-20";
         Long mockTotalOutcome = 800L;
-        // Mocking transactionService behavior
         when(transactionService.getTotalOutcomeByDate(any(LocalDate.class), any(LocalDate.class))).thenReturn(mockTotalOutcome);
 
-        // Act
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/api/transactions/total-outcome")
                 .param("startDate", startDate)
@@ -278,11 +257,11 @@ class TransactionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Assert
         verify(transactionService, times(1)).getTotalOutcomeByDate(LocalDate.parse(startDate), LocalDate.parse(endDate));
 
         String content = result.getResponse().getContentAsString();
-        Long responseTotalOutcome = new ObjectMapper().readValue(content, Long.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Long responseTotalOutcome = objectMapper.readValue(content, Long.class);
         assertEquals(mockTotalOutcome, responseTotalOutcome);
     }
 }

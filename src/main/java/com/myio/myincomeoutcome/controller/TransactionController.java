@@ -46,7 +46,7 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTransactions(@RequestParam(required = false) String date){
+    public ResponseEntity<?> getAllTransactions(@RequestParam(required = false, defaultValue = "2023-11-19") String date){
         if(date==null){
             List<TransactionResponse> transactions = transactionService.findAllTransactions();
             CommonResponse<List<TransactionResponse>> response = CommonResponse.<List<TransactionResponse>>builder()
@@ -121,7 +121,7 @@ public class TransactionController {
                 .body(response);
     }
     @GetMapping("/total-income")
-    public ResponseEntity<Long> getTotalIncomeByDate(@RequestParam String startDate,@RequestParam String endDate ) {
+    public ResponseEntity<Long> getTotalIncomeByDate(@RequestParam(defaultValue = "2023-11-19") String startDate,@RequestParam(defaultValue = "2023-11-19") String endDate ) {
         LocalDate parseStartDate = LocalDate.parse(startDate);
         LocalDate parseEndDate = LocalDate.parse(endDate);
         Long totalIncome = transactionService.getTotalIncomeByDate(parseStartDate, parseEndDate);
@@ -129,7 +129,7 @@ public class TransactionController {
     }
 
     @GetMapping("/total-outcome")
-    public ResponseEntity<Long> getTotalOutcomeByDate(@RequestParam String startDate,@RequestParam String endDate ) {
+    public ResponseEntity<Long> getTotalOutcomeByDate(@RequestParam(defaultValue = "2023-11-19") String startDate,@RequestParam(defaultValue = "2023-11-19") String endDate ) {
         LocalDate parseStartDate = LocalDate.parse(startDate);
         LocalDate parseEndDate = LocalDate.parse(endDate);
         Long totalOutcome = transactionService.getTotalOutcomeByDate(parseStartDate, parseEndDate);
